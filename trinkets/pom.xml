@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>xyz.luan</groupId>
+		<artifactId>parent-pom</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<groupId>xyz.luan.trinkets</groupId>
+	<artifactId>trinkets</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+
+	<name>trinkets</name>
+	<url>https://github.com/luanpotter/trinkets</url>
+	<description>Small collection of useful utilities.</description>
+
+	<scm>
+		<url>https://github.com/luanpotter/trinkets</url>
+		<connection>scm:git:git://github.com/luanpotter/trinkets.git</connection>
+		<developerConnection>scm:git:git@github.com:luanpotter/trinkets.git</developerConnection>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<configuration>
+				      <skip>true</skip>
+				 </configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
