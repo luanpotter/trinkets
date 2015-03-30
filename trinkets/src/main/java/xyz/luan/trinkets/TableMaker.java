@@ -1,8 +1,8 @@
 package xyz.luan.trinkets;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class TableMaker {
@@ -19,18 +19,67 @@ public class TableMaker {
         List<String> actualColumns = new ArrayList<>();
         String[] columns = line.split("\\s+");
         for (int i = 0; i < columns.length; i += 2) {
-            BigDecimal value = new BigDecimal(columns[i]);
-            BigDecimal error = new BigDecimal(columns[i + 1]);
-            String errorString = error(error, 1);
-            int decimalPlaces = errorString.split("\\.")[1].length();
-            String valueString = String.format("%." + decimalPlaces + "f", value);
-
-            actualColumns.add("$" + valueString + " \\pm " + errorString + "$");
+            String error = error(columns[i + 1]);
+            int decimalPlaces = error.split("\\.")[1].length();
+            String rawValue = columns[i];
+            if (rawValue.indexOf("\\.") == -1) {
+                rawValue += ".0";
+            }
+            String value = value(rawValue, decimalPlaces);
+            actualColumns.add("$" + value + " \\pm " + error + "$");
         }
         return actualColumns.stream().collect(Collectors.joining(" & ")) + " \\\\";
     }
 
-    private static String error(BigDecimal bd, int significantFigures) {
-        return String.format("%." + significantFigures + "G", bd);
+    private static String value(String value, int dp) {
+      int dot = value.indexOf('.');
+      int p = dot + dp + 1;
+      if (p >= value.length()) {
+          while (p > value.length()) {
+              value += '0';
+          }
+          return value;
+      }
+      boolean roundUp = value.charAt(dot + dp + 1) >= '5';
+      String n = value.substring(0, p);
+      return roundUp ? next(n) : n;
+    }
+
+    private static String error(String error) {
+      boolean dot = false;
+      String result = "";
+      for (int i = 0; i < error.length(); i++) {
+        char c = error.charAt(i);
+        result += c;
+        if (dot) {
+          if (c != '0') {
+            if (error.length() == i + 1 || error.charAt(i + 1) < '5') {
+              return result;
+            }
+            return next(result);
+          }
+        } else {
+          if (c == '.') {
+            dot = true;
+          }
+        }
+      }
+      return result;
+    }
+
+    private static String next(String number) {
+        String end = "";
+        for (int i = number.length() - 1; i >= 0; i--) {
+            char c = number.charAt(i);
+            if (c == '.') {
+                end = '.' + end;
+            } else if (c != '9') {
+                end = (char) (c + 1) + end;
+                return number.substring(0, i) + end;
+            } else {
+                end = '0' + end;
+            }
+        }
+        return '1' + number;
     }
 }
