@@ -2,16 +2,28 @@ package xyz.luan.models.trinket;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.gson.Gson;
 import org.junit.Test;
 
 import xyz.luan.utils.EndpointTestCase;
 
 public class TrinketTest extends EndpointTestCase {
 
+    private static class Data {
+        String table;
+
+	Data(String table) {
+            this.table = table;
+        }
+    }
+
     @Test
     public void testTableMaker() {
-        String json = put("/trinkets/table-maker", "{ table : 'table'}");
-        assertEquals("\"result: table\"", json);
+        final String rawTable = "0.583696  0.000764  8.0605  0.1663144612\n0.4356  0.00066 5.15872 0.1064412552\n0.225625  0.000475  2.90178 0.05987320603\n1.067089  0.001033  13.8425 0.2835603992\n0.727609  0.000853  8.8592  0.1814786555\n0.271441  0.000521  4.9833  0.1020817437\n0.160801  0.000401  2.2148  0.04536966387\n0.6241  0.00079 8.79354 0.1796766095\n0.319225  0.000565  3.90824 0.07985627089\n1.0404  0.00102 14.25312  0.2910136883\n0.477481  0.000691  6.33472 0.129339417\n0.117649  0.000343  1.58368 0.03233485426\n0.648025  0.000805  8.18104 0.1670060119\n0.161604  0.000402  2.04526 0.04175150297\n0.910116  0.000954  12.2892 0.2508306329\n0.246016  0.000496  3.0723  0.06270765822\n1.071225  0.001035  14.2884 0.2916263472\n0.274576  0.000524  3.5721  0.07290658681";
+        final String expected = "$0.5837 \\pm 0.0008$ & $8.1 \\pm 0.2$ \\\\\n$0.4356 \\pm 0.0007$ & $5.2 \\pm 0.1$ \\\\\n$0.2256 \\pm 0.0005$ & $2.90 \\pm 0.06$ \\\\\n$1.067 \\pm 0.001$ & $13.8 \\pm 0.3$ \\\\\n$0.7276 \\pm 0.0009$ & $8.9 \\pm 0.2$ \\\\\n$0.2714 \\pm 0.0005$ & $5.0 \\pm 0.1$ \\\\\n$0.1608 \\pm 0.0004$ & $2.21 \\pm 0.05$ \\\\\n$0.6241 \\pm 0.0008$ & $8.8 \\pm 0.2$ \\\\\n$0.3192 \\pm 0.0006$ & $3.91 \\pm 0.08$ \\\\\n$1.040 \\pm 0.001$ & $14.3 \\pm 0.3$ \\\\\n$0.4775 \\pm 0.0007$ & $6.3 \\pm 0.1$ \\\\\n$0.1176 \\pm 0.0003$ & $1.58 \\pm 0.03$ \\\\\n$0.6480 \\pm 0.0008$ & $8.2 \\pm 0.2$ \\\\\n$0.1616 \\pm 0.0004$ & $2.05 \\pm 0.04$ \\\\\n$0.9101 \\pm 0.0010$ & $12.3 \\pm 0.3$ \\\\\n$0.2460 \\pm 0.0005$ & $3.07 \\pm 0.06$ \\\\\n$1.071 \\pm 0.001$ & $14.3 \\pm 0.3$ \\\\\n$0.2746 \\pm 0.0005$ & $3.57 \\pm 0.07$ \\\\\n";
+        String json = put("/trinkets/table-maker", new Gson().toJson(new Data(rawTable)));
+	Data d = from(json, Data.class);
+        assertEquals(expected, d.table);
     }
 
 }
