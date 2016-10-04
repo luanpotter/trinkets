@@ -3,3 +3,5 @@ trinkets/test-output/
 trinkets/.classpath
 trinkets/.project
 trinkets/.settings/
+
+trinkets-app/target
