@@ -3,7 +3,7 @@ package xyz.luan.trinkets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import com.google.common.base.Joiner;
 
 public class TableMaker {
 
@@ -28,7 +28,7 @@ public class TableMaker {
             String value = value(rawValue, decimalPlaces);
             actualColumns.add("$" + value + " \\pm " + error + "$");
         }
-        return actualColumns.stream().collect(Collectors.joining(" & ")) + " \\\\";
+        return Joiner.on(" & ").join(actualColumns) + " \\\\";
     }
 
     private static String value(String value, int dp) {
