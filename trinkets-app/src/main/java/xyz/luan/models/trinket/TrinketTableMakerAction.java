@@ -1,15 +1,19 @@
 package xyz.luan.models.trinket;
 
-import io.yawp.commons.http.annotation.GET;
+import io.yawp.commons.http.annotation.PUT;
 import io.yawp.repository.IdRef;
 import io.yawp.repository.actions.Action;
 
 public class TrinketTableMakerAction extends Action<Trinket> {
 
-    @GET("table-maker")
-    public String tableMaker(String table) {
+    private static class Data {
+        String table;
+    }
+
+    @PUT("table-maker")
+    public String tableMaker(Data data) {
         // TableMaker.convertBody(
-        return "result: " +  table;
+        return "result: " +  data.table;
     }
 
 }
