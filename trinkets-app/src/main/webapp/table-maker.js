@@ -5,6 +5,6 @@ $('#convert').on('click', function () {
 	var table = $('#input').val();
 	$('#output').text('Loading...');
 	yawp('/trinkets').json({ table : table }).put('table-maker').then(function (r) {
-		$('#output').text(r.table);
+		$('#output').html(r.table.replace(/\n/g, '<br />'));
 	});
 });
